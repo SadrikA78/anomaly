@@ -74,12 +74,53 @@ pipeline {
           }
         }
 
+        stage('Payload') {
+          steps {
+            sh 'appsec.payload (params = script)'
+          }
+        }
+
       }
     }
 
     stage('Product') {
-      steps {
-        sh 'appsec.checkup (product, params = token)'
+      parallel {
+        stage('Product') {
+          steps {
+            sh 'appsec.checkup (product, params = token)'
+          }
+        }
+
+        stage('Phishing attack') {
+          steps {
+            sh 'appsec.llm.phishing (params = phi, types = [])'
+          }
+        }
+
+        stage('Semantick attack') {
+          steps {
+            sh 'appsec.llm.semantic(params = class_true, new_class, n_world)'
+          }
+        }
+
+        stage('Jailbreaking') {
+          steps {
+            sh 'appsec.llm.laibreaking (params = n_promts)'
+          }
+        }
+
+        stage('Adv attack') {
+          steps {
+            sh 'appsec.adv (params = type, hyperparams = [])'
+          }
+        }
+
+        stage('Payload') {
+          steps {
+            sh 'appsec.payload (params = script)'
+          }
+        }
+
       }
     }
 
