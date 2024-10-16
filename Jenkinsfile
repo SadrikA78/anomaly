@@ -37,8 +37,43 @@ pipeline {
     }
 
     stage('Train') {
-      steps {
-        sh 'appsec.checkup (train, params = run_id, model_id)'
+      parallel {
+        stage('Train') {
+          steps {
+            sh 'appsec.checkup (train, params = run_id, model_id)'
+          }
+        }
+
+        stage('Phishing attack') {
+          steps {
+            sh 'appsec.llm.phishing (params = phi, types = [])'
+          }
+        }
+
+        stage('Semantick attack') {
+          steps {
+            sh 'appsec.llm.semantic(params = class_true, new_class, n_world)'
+          }
+        }
+
+        stage('Backdoor') {
+          steps {
+            sh 'appsec.llm.backdoor(params = type, trigger = [])'
+          }
+        }
+
+        stage('Jailbreaking') {
+          steps {
+            sh 'appsec.llm.laibreaking (params = n_promts)'
+          }
+        }
+
+        stage('Adv attack') {
+          steps {
+            sh 'appsec.adv (params = type, hyperparams = [])'
+          }
+        }
+
       }
     }
 
