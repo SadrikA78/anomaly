@@ -30,5 +30,18 @@ pipeline {
       }
     }
 
+    stage('Report') {
+      steps {
+        sh 'appsec.report (params = json, pdf, docx)'
+      }
+    }
+
+    stage('Plan') {
+      steps {
+        sh 'appsec.sheduler (params = days, week)'
+        sh 'appsec.check (params = date, id)'
+      }
+    }
+
   }
 }
