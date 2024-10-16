@@ -24,5 +24,11 @@ pipeline {
       }
     }
 
+    stage('Product') {
+      steps {
+        sh 'appsec.checkup (product, params = token)'
+      }
+    }
+
   }
 }
