@@ -125,15 +125,37 @@ pipeline {
     }
 
     stage('Report') {
-      steps {
-        sh 'appsec.report (params = json, pdf, docx)'
+      parallel {
+        stage('Report') {
+          steps {
+            sh 'appsec.report (params = json, pdf, docx)'
+          }
+        }
+
+        stage('Estimator') {
+          steps {
+            sh 'appsec.estimator (params, metrics, artifacts)'
+          }
+        }
+
       }
     }
 
     stage('Plan') {
-      steps {
-        sh 'appsec.sheduler (params = days, week)'
-        sh 'appsec.check (params = date, id)'
+      parallel {
+        stage('Plan') {
+          steps {
+            sh 'appsec.sheduler (params = days, week)'
+            sh 'appsec.check (params = date, id)'
+          }
+        }
+
+        stage('Control') {
+          steps {
+            sh 'appsec.check (params = date, id)'
+          }
+        }
+
       }
     }
 
