@@ -1,9 +1,20 @@
 pipeline {
   agent any
   stages {
-    stage('') {
-      steps {
-        echo 'ax'
+    stage('error') {
+      parallel {
+        stage('error') {
+          steps {
+            echo 'ax'
+          }
+        }
+
+        stage('dwwf') {
+          steps {
+            echo 'ascv'
+          }
+        }
+
       }
     }
 
