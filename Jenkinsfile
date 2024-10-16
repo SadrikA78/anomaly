@@ -1,11 +1,11 @@
 pipeline {
   agent any
   stages {
-    stage('error') {
+    stage('Datasets') {
       parallel {
-        stage('error') {
+        stage('Scan Data') {
           steps {
-            echo 'ax'
+            sh 'appsec.checkup_convert'
           }
         }
 
@@ -15,6 +15,12 @@ pipeline {
           }
         }
 
+      }
+    }
+
+    stage('Train') {
+      steps {
+        sh 'appsec.checkup (train, params = run_id, model_id)'
       }
     }
 
