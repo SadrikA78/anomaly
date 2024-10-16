@@ -9,9 +9,27 @@ pipeline {
           }
         }
 
-        stage('dwwf') {
+        stage('Search phifhing') {
           steps {
-            echo 'ascv'
+            sh 'appsec.phishing ()'
+          }
+        }
+
+        stage('Search drift') {
+          steps {
+            sh 'appsec.drift(params = n_groups, b, g)'
+          }
+        }
+
+        stage('AntiAdv') {
+          steps {
+            sh 'appsec.antiAdv(param = delta_inference)'
+          }
+        }
+
+        stage('Set "Water marks"') {
+          steps {
+            sh 'appsec.water_marking (param = type_data)'
           }
         }
 
